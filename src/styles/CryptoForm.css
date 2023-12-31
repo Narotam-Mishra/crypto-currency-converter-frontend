@@ -1,0 +1,120 @@
+
+body {
+    width: 1480px;
+    height: 690px;
+    background: linear-gradient(123deg, rgba(115, 112, 251, 0.24) 13.23%, #0B0960 81.17%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-text {
+    color: #004C92;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.form-container{
+    width: 705px;
+    height: 530px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid #000;
+    background: #D8D8D8;
+    box-shadow: 17px 20px 21.1px 0px rgba(0, 0, 0, 0.39);  
+}
+
+.form-items{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+}
+
+.crypto-label {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 0.8 rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.crypto-inputbox {
+    width: 42%;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid #000;
+    background: #FFF;
+    margin-left: 10px;
+    border: none;
+    outline: none;
+}
+
+.currency-label{
+    color: #000;
+    font-family: Montserrat;
+    font-size: 0.8 rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.currnecy-input{
+    width: 42%;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid #000;
+    background: #FFF;
+    margin-left: 10px;
+    border: none;
+    outline: none;
+}
+
+.amount-input{
+    width: 42%;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid #000;
+    background: #FFF;
+    margin-left: 10px;
+    border: none;
+    outline: none;
+}
+
+.btn-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.btn-submit {
+    width: 168px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    border: 1px solid #000;
+    background: #004C92;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.btn-submit:hover{
+    background: rgb(231, 14, 50);
+    color: rgb(23, 172, 231);
+}
+
+::placeholder{
+    font-size: 16px;
+    padding: 10px;
+}

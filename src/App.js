@@ -1,9 +1,10 @@
 import './App.css';
+import CryptoForm from './components/CryptoForm';
 
 function App() {
   return (
     <div className="App">
-      Crypto App
+      <CryptoForm />
     </div>
   );
 }
