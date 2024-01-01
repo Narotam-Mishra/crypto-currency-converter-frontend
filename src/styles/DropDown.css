@@ -1,0 +1,43 @@
+
+/* Styling of Crypto Form */
+
+.container{
+    /* border:2px solid red; */
+    width: 50vw;
+    height:90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    border-radius: 20px;
+    background: #D8D8D8;
+    box-shadow: 17px 20px 21.1px 0px rgba(0, 0, 0, 0.39);
+    
+}
+
+.card{
+    width: 80%;
+    margin-top: -100px;
+    border-radius: 20px;
+}
+
+.dropdown-Con{
+    margin-bottom: 2.5rem;
+    /* margin-top: 1rem; */
+    
+}
+
+.heading{
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 10%;
+}
+.convert-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+}
