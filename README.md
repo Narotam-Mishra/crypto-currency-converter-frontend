@@ -1,8 +1,6 @@
-# Created React form for Cryptos, currencies & Amount input using prime react library.
-
-# To calculate (convert) the crypto currency's equivalent amount, calling API
-
 # Getting Started with Create React App
+
+Deployment link - https://crypto-currency-converter-react-naru.vercel.app/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
