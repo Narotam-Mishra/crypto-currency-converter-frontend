@@ -6,25 +6,29 @@ import axios from "axios";
 import "primeflex/primeflex.css";
 import "../styles/DropDown.css";
 
+// locally available crypto currencies
+const local_crypto_currencies = [
+  { id: "bitcoin", name: "Bitcoin" },
+  { id: "ethereum", name: "Ethereum" },
+  { id: "tether", name: "Tether" },
+  { id: "binancecoin", name: "BNB" },
+  { id: "solana", name: "Solana" },
+  { id: "ripple", name: "XRP" },
+  { id: "usd-coin", name: "USDC" },
+  { id: "cardano", name: "Cardano" },
+  { id: "dogecoin", name: "Dogecoin" },
+  { id: "polkadot", name: "Polkadot" }
+];
+
 function CryptoFormComp() {
   const [value, setValue] = useState("");
   const [cryptosList, setCryptosList] = useState([]);
-  // const [selectedCity, setSelectedCity] = useState(null);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [supportedCurrencies, setSupportedCurrencies] = useState([]);
   const [currencies, setCurrencies] = useState("usd");
   const [error, setError] = useState(null);
   const [convertedAmount, setConvertedAmount] = useState(null);
   
-  // const cities = [
-  //   { name: "New York", code: "NY" },
-  //   { name: "Rome", code: "RM" },
-  //   { name: "London", code: "LDN" },
-  //   { name: "Istanbul", code: "IST" },
-  //   { name: "Paris", code: "PRS" },
-  // ];
-
-
   const getCryptoList = async () => {
     try {
       const response = await axios.get(
@@ -35,9 +39,22 @@ function CryptoFormComp() {
         .slice(0, 100)
         .map((item) => ({ label: item.name, value: item.name }));
       // console.log("response",cryptoNames);
-      setCryptosList(cryptoNames);
+
+      const localCryptoNames = local_crypto_currencies.map((crypto) => ({
+        label: crypto.name,
+        value: crypto.id,
+      }));
+      setCryptosList([...localCryptoNames, ...cryptoNames]);
     } catch (error) {
       console.error(error);
+
+       // If fetching from API fails, set local crypto currencies as a fallback
+       const localCryptoNames = local_crypto_currencies.map((crypto) => ({
+        label: crypto.name,
+        value: crypto.id,
+      }));
+  
+      setCryptosList(localCryptoNames);
     }
   };
 
@@ -56,8 +73,8 @@ function CryptoFormComp() {
     }
   };
 
-  
-
+  // calling getCryptoList & fetchSupportedCurrencies functions under useEffect 
+  // as we are making APIs calls
   useEffect(() => {
      getCryptoList();
      fetchSupportedCurrencies();
@@ -66,8 +83,14 @@ function CryptoFormComp() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    // if all required fields is not present then show erorr on UI
+    if (!selectedCrypto || !value || !currencies) {
+      setError("Please select all fields");
+    }
+
     try {
-      const response = await axios.get('http://localhost:7171/crypto-api/v1/convert', {
+      // call to backend APIs to convert crypto currency amount
+      const response = await axios.get('https://crypto-currency-converter-naru.onrender.com/crypto-api/v1/convert', {
         params: {
           sourceCrypto: selectedCrypto,  // Use selectedCrypto 
           amount: value,                 // Use value for amount
@@ -75,11 +98,29 @@ function CryptoFormComp() {
         },
       });
 
-      setConvertedAmount(response.data.convertedAmount);
-      setError(null);
+      const statusCode = response.status;
+      const responseData = response.data;
+
+      // Handle different status codes error
+      if (statusCode === 200) {
+        setConvertedAmount(responseData.convertedAmount);
+        setError(null);
+      } else if(statusCode === 400){
+        setError("Invalid exchange rate. Please try using differnt currency combination.");
+        setConvertedAmount(null);
+      }else if(statusCode === 500){
+        setError("Internal Server Error");
+        setConvertedAmount(null);
+      }else if (statusCode === 429) {
+        setError("Too many requests. Please try again later.");
+        setConvertedAmount(null);
+      } else {
+        setError("Error converting currency. Please try again.");
+        setConvertedAmount(null);
+      }
     } catch (error) {
       console.error(error);
-      setError('Error converting currency');
+      setError(error.message);
       setConvertedAmount(null);
     }
   };
@@ -87,7 +128,7 @@ function CryptoFormComp() {
   return (
     <div className="container">
       <div className="card">
-        <h1 className="heading">CURRENCY CONVERTER</h1>
+        <h1 className="heading">CRYPTO CURRENCY CONVERTER</h1>
         <div className="dropdown-Con">
           <label
             htmlFor="amount"
@@ -95,7 +136,6 @@ function CryptoFormComp() {
           >
             Select any Crypto Currency
           </label>
-
           <Dropdown
             value={selectedCrypto}
             onChange={(e) => setSelectedCrypto(e.value)}
@@ -120,9 +160,6 @@ function CryptoFormComp() {
             Select Target Currency
           </label>
           <Dropdown
-            
-            // value={targetCurrency}
-            // onChange={(e) => setTargetCurrency(e.value)}
             value={currencies}
             onChange={(e) => setCurrencies(e.value)}
             options={supportedCurrencies}
