@@ -26,7 +26,7 @@ function CryptoFormComp() {
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [supportedCurrencies, setSupportedCurrencies] = useState([]);
   const [currencies, setCurrencies] = useState("usd");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [convertedAmount, setConvertedAmount] = useState(null);
   
   const getCryptoList = async () => {
@@ -101,26 +101,25 @@ function CryptoFormComp() {
       const statusCode = response.status;
       const responseData = response.data;
 
-      // Handle different status codes error
       if (statusCode === 200) {
         setConvertedAmount(responseData.convertedAmount);
-        setError(null);
-      } else if(statusCode === 400){
-        setError("Invalid exchange rate. Please try using differnt currency combination.");
-        setConvertedAmount(null);
-      }else if(statusCode === 500){
-        setError("Internal Server Error");
-        setConvertedAmount(null);
-      }else if (statusCode === 429) {
-        setError("Too many requests. Please try again later.");
-        setConvertedAmount(null);
-      } else {
-        setError("Error converting currency. Please try again.");
-        setConvertedAmount(null);
+        setError('');
       }
+
+      // Handle different status codes error
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      if(error.message === "Request failed with status code 500"){
+        setError("Internal Server Error");
+      }else if(error.message === "Request failed with status code 400"){
+        setError("Invalid exchange rate. Please try using differnt currency combination.")
+      }else if(error.message === "Too Many Requests"){
+        setError("Too many requests. Please try again later.")
+      }else if(error.message === "Network Error"){
+        setError("Network error from Server, please try again later");
+      }else{
+        setError("Error converting currency. Please try again.");
+      }
       setConvertedAmount(null);
     }
   };
